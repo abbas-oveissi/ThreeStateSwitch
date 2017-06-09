@@ -8,11 +8,17 @@
     tools:context="ir.oveissi.threestateswitch.sample.MainActivity">
 
     <ir.oveissi.threestateswitch.ThreeStateSwitch
-        android:layout_width="300dp"
-        app:text_selected_size="20sp"
         android:id="@+id/threeState"
-        android:layout_gravity="center"
-        android:layout_height="30dp"/>
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:background_selected_color="#5bb434"
+        app:background_normal_color="#bfbfbf"
+        app:text_left="راست"
+        app:text_right="چپ"
+        app:text_selected_color="#5bb434"
+        app:text_normal_color="#646464"
+        app:text_normal_size="16sp"
+        app:text_selected_size="20sp"/>
 
 
     <!--<ImageView-->
