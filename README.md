@@ -13,7 +13,7 @@ ThreeStateSwitch is an android library
 
 # Preview
 
-![](http://)
+![](http://https://raw.githubusercontent.com/abbas-oveissi/ThreeStateSwitch/master/assets/demo.gif)
 
 # Setup
 ## 1. Provide the gradle dependency
