@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven'
 
 group='com.github.abbas-oveissi'
 
@@ -10,8 +10,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 1
-        versionName "0.8.0"
+        versionCode 2
+        versionName "0.8.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

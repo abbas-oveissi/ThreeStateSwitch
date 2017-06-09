@@ -29,7 +29,7 @@ allprojects {
 Add the dependency:
 ```gradle
 dependencies {
-	compile 'com.github.abbas-oveissi:threestateswitch:0.8.0'
+	compile 'com.github.abbas-oveissi:threestateswitch:0.8.1'
 }
 ```
 
