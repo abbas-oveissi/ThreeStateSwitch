@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ThreeStateSwitch">
+        <attr name="background_selected_color" format="color" />
+        <attr name="background_normal_color" format="color" />
+
+        <attr name="text_normal_color" format="color" />
+        <attr name="text_selected_color" format="color" />
+
+        <attr name="text_left" format="string"/>
+        <attr name="text_right" format="string"/>
+
+        <attr name="text_normal_size" format="dimension" />
+        <attr name="text_selected_size" format="dimension" />
+
+    </declare-styleable>
+
+</resources>

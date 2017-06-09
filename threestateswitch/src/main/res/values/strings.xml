@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ThreeStateSwitch</string>
+
+
+    <string name="text_right">راست</string>
+    <string name="text_left">چپ</string>
+</resources>

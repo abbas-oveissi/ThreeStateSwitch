@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="text_normal_size">16sp</dimen>
+    <dimen name="text_selected_size">16sp</dimen>
+
+</resources>

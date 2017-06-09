@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="background_normal_color" type="color">#bfbfbf</item>
+    <item name="background_selected_color" type="color">#5ab72e</item>
+
+
+    <item name="text_normal_color" type="color">#646464</item>
+    <item name="text_selected_color" type="color">#5bb434</item>
+
+
+</resources>
+
