@@ -1,7 +1,8 @@
 [![Release](https://jitpack.io/v/abbas-oveissi/ThreeStateSwitch.svg)](https://jitpack.io/#abbas-oveissi/ThreeStateSwitch)
 
 ## ThreeStateSwitch
-ThreeStateSwitch is an android library
+
+A simple three-state switch view for Android.
 
 **Project Setup and Dependencies**
 - MinSDK 14
@@ -17,6 +18,7 @@ ThreeStateSwitch is an android library
 
 # Setup
 ## 1. Provide the gradle dependency
+
 Add it in your root build.gradle at the end of repositories:
 ```gradle
 allprojects {
@@ -29,12 +31,13 @@ allprojects {
 Add the dependency:
 ```gradle
 dependencies {
-	compile 'com.github.abbas-oveissi:threestateswitch:0.8.1'
+	compile 'com.github.abbas-oveissi:threestateswitch:0.8.2'
 }
 ```
 
-## 2. Add your code
-add ThreeStateSwitch to UI layout
+## 2. How to use
+
+Add the ThreeStateSwitch in your layout file and customize it the way you like it.
 ```xml
 <ir.oveissi.threestateswitch.ThreeStateSwitch
     android:id="@+id/threeState"
@@ -49,7 +52,26 @@ add ThreeStateSwitch to UI layout
     app:text_normal_size="16sp"
     app:text_selected_size="20sp"/>
 ```
-
+You can set a listener for state changes
+```java
+threeState.setOnChangeListener(new ThreeStateSwitch.OnStateChangeListener() {
+    @Override
+    public void OnStateChangeListener(int currentState) {
+        //current state=  -1  0  1
+        Toast.makeText(MainActivity.this, String.valueOf(currentState), Toast.LENGTH_SHORT).show();
+    }
+});
+```
+You can set typeface for texts.
+```java
+threeState.setNormalTextTypeface( );
+threeState.setSelectedTextTypeface( );
+```
+Get the current state. 
+```java
+//state=  -1  0  1
+threeState.getState();
+```
 ## attributes
 
 | Name | Type | Default | Description |
@@ -58,11 +80,14 @@ add ThreeStateSwitch to UI layout
 |background_normal_color|Color|#bfbfbf|  |
 |text_normal_color|Color|#646464|  |
 |text_selected_color|Color|#5bb434|  |
-|text_left|String|چپ|  |
-|text_right|String|راست|  |
+|text_left|String||  |
+|text_right|String||  |
 |text_normal_size|Dp or Sp|16sp|  |
 |text_selected_size|Dp or Sp|16sp|  |
 
+# Bugs and features
+
+For bugs, feature requests, and discussion please use GitHub Issues.
 
 # Developed By
 
