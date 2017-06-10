@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="ir.oveissi.threestateswitch.sample.MainActivity">
 
     <ir.oveissi.threestateswitch.ThreeStateSwitch
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
         android:id="@+id/threeState"
         android:layout_width="200dp"
+        app:text_right="زیاد"
+        app:text_left="کم"
         android:layout_height="wrap_content"
-        app:background_selected_color="#5bb434"
-        app:background_normal_color="#bfbfbf"
-        app:text_left="راست"
-        app:text_right="چپ"
-        app:text_selected_color="#5bb434"
-        app:text_normal_color="#646464"
+        app:text_normal_size="16sp"
+        app:text_selected_size="20sp"/>
+
+    <ir.oveissi.threestateswitch.ThreeStateSwitch
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:id="@+id/threeState1"
+        android:layout_width="200dp"
+        app:text_right="زیاد"
+        app:text_left="کم"
+        app:text_selected_color="#0037ec"
+        android:layout_height="wrap_content"
         app:text_normal_size="16sp"
         app:text_selected_size="20sp"/>
 
 
-    <!--<ImageView-->
-    <!--android:layout_gravity="center"-->
-    <!--android:src="@mipmap/ic_launcher"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"/>-->
+    <ir.oveissi.threestateswitch.ThreeStateSwitch
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"/>
 
-    <!--<TextView-->
-    <!--android:layout_gravity="center"-->
-    <!--android:background="#FAF"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:text="sddk;lsdk ;lksd;l ks;ldk ;skd;"-->
-    <!--android:padding="10dp"-->
-    <!--android:layout_height="wrap_content"/>-->
 
-</FrameLayout>
+    <ir.oveissi.threestateswitch.ThreeStateSwitch
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:background_normal_color="#3b6bfc"
+        app:background_selected_color="#ff3f3f"/>
+
+</LinearLayout>

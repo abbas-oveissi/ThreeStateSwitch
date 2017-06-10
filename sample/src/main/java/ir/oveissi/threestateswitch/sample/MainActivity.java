@@ -14,9 +14,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         ThreeStateSwitch threeState= (ThreeStateSwitch) findViewById(R.id.threeState);
+        ThreeStateSwitch threeState1= (ThreeStateSwitch) findViewById(R.id.threeState1);
 
         threeState.setNormalTextTypeface(FontHelper.get(this,"vazir.ttf"));
         threeState.setSelectedTextTypeface(FontHelper.get(this,"vazir_b.ttf"));
 
+        threeState1.setNormalTextTypeface(FontHelper.get(this,"vazir.ttf"));
+        threeState1.setSelectedTextTypeface(FontHelper.get(this,"vazir_b.ttf"));
     }
 }
