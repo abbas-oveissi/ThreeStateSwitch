@@ -82,8 +82,8 @@ public class ThreeStateSwitch extends View {
     public int diameterSize =0;
 
 
-    String lessText="کم";
-    String moreText="زیاد";
+    String lessText="";
+    String moreText="";
 
 
     public ThreeStateSwitch(Context context) {
@@ -113,41 +113,42 @@ public class ThreeStateSwitch extends View {
         this.context = context;
         this.attrs = attrs;
 
-        int[] attrsArray = new int[] {
-                R.attr.background_selected_color, // 0
-                R.attr.background_normal_color, // 1
-                R.attr.text_normal_color, // 2
-                R.attr.text_selected_color, // 3
-                R.attr.text_normal_size, // 4
-                R.attr.text_selected_size, // 5
-                R.attr.text_left, // 6
-                R.attr.text_right, // 7
-        };
-        TypedArray ta = context.obtainStyledAttributes(attrs, attrsArray);
+//        int[] attrsArray = new int[] {
+//                R.attr.background_selected_color, // 0
+//                R.attr.background_normal_color, // 1
+//                R.attr.text_normal_color, // 2
+//                R.attr.text_selected_color, // 3
+//                R.attr.text_normal_size, // 4
+//                R.attr.text_selected_size, // 5
+//                R.styleable.ThreeStateSwitch_text_left, // 6
+//                R.styleable.ThreeStateSwitch_text_right // 7
+//        };
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateSwitch);
 
-        colorStateSelected = ta.getColor(0 ,getResources().getColor(R.color.background_selected_color));
-        colorStateUnSelected = ta.getColor(1 ,getResources().getColor(R.color.background_normal_color));
+        colorStateSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_selected_color ,getResources().getColor(R.color.background_selected_color));
+        colorStateUnSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_normal_color  ,getResources().getColor(R.color.background_normal_color));
 
         backgroundColor=colorStateUnSelected;
 
 
-        text_normal_color = ta.getColor(2 ,getResources().getColor(R.color.text_normal_color));
-        text_selected_color = ta.getColor(3 ,getResources().getColor(R.color.text_selected_color));
+        text_normal_color = ta.getColor(R.styleable.ThreeStateSwitch_text_normal_color ,getResources().getColor(R.color.text_normal_color));
+        text_selected_color = ta.getColor(R.styleable.ThreeStateSwitch_text_selected_color  ,getResources().getColor(R.color.text_selected_color));
 
-        text_normal_size = ta.getDimensionPixelSize(4 ,(int)getResources().getDimension(R.dimen.text_normal_size));
-        text_selected_size = ta.getDimensionPixelSize(5 ,(int)getResources().getDimension(R.dimen.text_selected_size));
+        text_normal_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_normal_size  ,(int)getResources().getDimension(R.dimen.text_normal_size));
+        text_selected_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_selected_size  ,(int)getResources().getDimension(R.dimen.text_selected_size));
 
 
-        lessText = ta.getString(6);
+        lessText = ta.getString(R.styleable.ThreeStateSwitch_text_left);
         if(lessText==null)
         {
             lessText=getResources().getString(R.string.text_left);
         }
-        moreText = ta.getString(7);
+        moreText = ta.getString(R.styleable.ThreeStateSwitch_text_right);
         if(moreText==null)
         {
             moreText=getResources().getString(R.string.text_right);
         }
+
 
         ta.recycle();
 
@@ -206,6 +207,10 @@ public class ThreeStateSwitch extends View {
     }
 
 
+    public int getState()
+    {
+        return this.state;
+    }
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
