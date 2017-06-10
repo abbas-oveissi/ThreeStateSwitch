@@ -4,6 +4,8 @@
 
 A simple three-state switch view for Android.
 
+**Please Note:** This library has not been fully tested, so use with a little caution, and submit an issue or better, a pull request if you notice any issues at all.
+
 **Project Setup and Dependencies**
 - MinSDK 14
 
