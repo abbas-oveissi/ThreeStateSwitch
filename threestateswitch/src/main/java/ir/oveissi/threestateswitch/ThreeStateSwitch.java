@@ -53,6 +53,8 @@ public class ThreeStateSwitch extends View {
     int text_normal_size ;
     int text_selected_size;
 
+    boolean twoStateAfterInit = false;
+
 //     <item name="background_normal_color" type="color">#bfbfbf</item>
 //    <item name="background_selected_color" type="color">#5ab72e</item>
     int colorStateUnSelected = Color.parseColor("#bfbfbf");
@@ -136,6 +138,8 @@ public class ThreeStateSwitch extends View {
 
         text_normal_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_normal_size  ,(int)getResources().getDimension(R.dimen.text_normal_size));
         text_selected_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_selected_size  ,(int)getResources().getDimension(R.dimen.text_selected_size));
+
+        twoStateAfterInit = ta.getBoolean(R.styleable.ThreeStateSwitch_two_state_after_init , false);
 
 
         lessText = ta.getString(R.styleable.ThreeStateSwitch_text_left);
@@ -257,7 +261,11 @@ public class ThreeStateSwitch extends View {
         switch (state)
         {
             case -1:
-                xCircle=(int)(ovalRectF.left+(diameterSize /2.0));
+                if (!twoStateAfterInit)
+                    xCircle=(int)(ovalRectF.left+(diameterSize /2.0));
+                else
+                    xCircle=(int)(ovalRectF.centerX());
+                break;
             case 0:
                 xCircle=(int)(ovalRectF.centerX());
                 break;
@@ -335,6 +343,13 @@ public class ThreeStateSwitch extends View {
 
     private int whichStateClick(float x ,float y)
     {
+        if (twoStateAfterInit) {
+            int half = (int) ((viewWidth - (2 * maxNeededTextWidth) - paddingLeft - paddingRight) / 2.0);
+            if (x < half + maxNeededTextWidth + paddingLeft)
+                return -1;
+            else
+                return 1;
+        }
         int yekSevom=(int)((viewWidth-(2*maxNeededTextWidth)-paddingLeft-paddingRight)/3.0);
         if(x<yekSevom+maxNeededTextWidth+paddingLeft)
             return -1;
@@ -432,7 +447,10 @@ public class ThreeStateSwitch extends View {
         {
             switch (mState) {
                 case -1:
-                    setBackColor(colorStateSelected);
+                    if (!twoStateAfterInit)
+                        setBackColor(colorStateSelected);
+                    else
+                        setBackColor(colorStateUnSelected);
 
                     break;
                 case 0:
@@ -452,11 +470,15 @@ public class ThreeStateSwitch extends View {
         ObjectAnimator anim,anim1;
         switch (mState) {
             case -1:
-                anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
-                        .setDuration(400);
+                if (twoStateAfterInit) {
+                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateUnSelected)
+                            .setDuration(400);
+                } else {
+                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
+                            .setDuration(400);
+                }
                 anim.setEvaluator(new ArgbEvaluator());
                 viewAnimList.add(anim);
-
                 anim1 = ObjectAnimator.ofInt(this, "xCircle",setBoundForXCircle((float)(diameterSize /2.0)))
                         .setDuration(400);
                 viewAnimList.add(anim1);

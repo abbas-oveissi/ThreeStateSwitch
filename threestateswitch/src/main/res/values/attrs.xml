@@ -13,6 +13,8 @@
         <attr name="text_normal_size" format="dimension" />
         <attr name="text_selected_size" format="dimension" />
 
+        <attr name="two_state_after_init" format="boolean" />
+
     </declare-styleable>
 
 </resources>
