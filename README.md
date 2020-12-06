@@ -86,6 +86,7 @@ threeState.getState();
 |text_right|String||  |
 |text_normal_size|Dp or Sp|16sp|  |
 |text_selected_size|Dp or Sp|16sp|  |
+|two_state_after_init|Boolean|false|Converts switch to a two state switch after first interaction  |
 
 # Bugs and features
 
