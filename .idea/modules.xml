@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ThreeStateSwitch.iml" filepath="$PROJECT_DIR$/.idea/ThreeStateSwitch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ThreeStateSwitch.iml" filepath="$PROJECT_DIR$/.idea/modules/ThreeStateSwitch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample/ThreeStateSwitch.sample.iml" filepath="$PROJECT_DIR$/.idea/modules/sample/ThreeStateSwitch.sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/threestateswitch/ThreeStateSwitch.threestateswitch.iml" filepath="$PROJECT_DIR$/.idea/modules/threestateswitch/ThreeStateSwitch.threestateswitch.iml" />
     </modules>
   </component>
 </project>
