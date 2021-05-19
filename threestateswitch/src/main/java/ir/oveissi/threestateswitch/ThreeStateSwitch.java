@@ -29,6 +29,7 @@ import java.util.ArrayList;
  * Created by abbas on 8/6/16.
  */
 
+@SuppressWarnings("unused")
 public class ThreeStateSwitch extends View {
     private int state = 0;
     private boolean isDrag;
@@ -286,8 +287,8 @@ public class ThreeStateSwitch extends View {
                     isDrag = true;
                 }
                 if (isDrag) {
-                    int endBoundry = (int) Math.max((diameterSize / 2) - delta, event.getX());
-                    int tempX = (int) Math.min(endBoundry, viewWidth - (diameterSize / 2));
+                    int endBoundry = (int) Math.max((diameterSize / 2f) - delta, event.getX());
+                    int tempX = (int) Math.min(endBoundry, viewWidth - (diameterSize / 2f));
                     xCircle = tempX + delta;
                     xCircle = setBoundForXCircle(xCircle);
                 }
@@ -347,7 +348,7 @@ public class ThreeStateSwitch extends View {
 
         //ovalRectF.set(0,0,viewWidth,viewHeight);
         ovalPaint.setColor(backgroundColor);
-        canvas.drawRoundRect(ovalRectF, diameterSize / 2, diameterSize / 2, ovalPaint);
+        canvas.drawRoundRect(ovalRectF, diameterSize / 2f, diameterSize / 2f, ovalPaint);
 
 
         if (!isAnimate && !isDrag) {
@@ -391,7 +392,7 @@ public class ThreeStateSwitch extends View {
     }
 
 
-    private Rect r = new Rect();
+    private final Rect r = new Rect();
 
     private void drawCenter(Canvas canvas, int drawX, int drawY, Paint paint, String text) {
         paint.setTextAlign(Paint.Align.LEFT);
@@ -429,7 +430,7 @@ public class ThreeStateSwitch extends View {
         if (onStateChangeListener != null)
             onStateChangeListener.OnStateChangeListener(mState);
         AnimatorSet animSet = new AnimatorSet();
-        ArrayList<Animator> viewAnimList = new ArrayList<Animator>();
+        ArrayList<Animator> viewAnimList = new ArrayList<>();
         ObjectAnimator anim, anim1;
         switch (mState) {
             case -1:
@@ -452,7 +453,7 @@ public class ThreeStateSwitch extends View {
                 anim.setEvaluator(new ArgbEvaluator());
                 viewAnimList.add(anim);
 
-                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (ovalRectF.centerX())))
+                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle(ovalRectF.centerX()))
                         .setDuration(400);
                 viewAnimList.add(anim1);
                 break;
