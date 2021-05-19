@@ -7,14 +7,12 @@
         <attr name="text_normal_color" format="color" />
         <attr name="text_selected_color" format="color" />
 
-        <attr name="text_left" format="string"/>
-        <attr name="text_right" format="string"/>
+        <attr name="text_left" format="string" />
+        <attr name="text_right" format="string" />
 
         <attr name="text_normal_size" format="dimension" />
         <attr name="text_selected_size" format="dimension" />
 
         <attr name="two_state_after_init" format="boolean" />
-
     </declare-styleable>
-
 </resources>
