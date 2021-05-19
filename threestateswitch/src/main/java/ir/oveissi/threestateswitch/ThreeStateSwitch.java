@@ -30,43 +30,30 @@ import java.util.ArrayList;
  */
 
 public class ThreeStateSwitch extends View {
-    private Context context;
-    private AttributeSet attrs;
-
-    private int state=0;
+    private int state = 0;
     private boolean isDrag;
-    private float xDrag;
-    private float yDrag;
     private float startX;
     private boolean isAnimate;
     private boolean isPressed;
-    private Typeface selectedTextTypeface;
-    private Typeface normalTextTypeface;
 
 
-
-
-
-
-    int text_normal_color ;
+    int text_normal_color;
     int text_selected_color;
-    int text_normal_size ;
+    int text_normal_size;
     int text_selected_size;
 
     boolean twoStateAfterInit = false;
 
-//     <item name="background_normal_color" type="color">#bfbfbf</item>
-//    <item name="background_selected_color" type="color">#5ab72e</item>
     int colorStateUnSelected = Color.parseColor("#bfbfbf");
-    int colorStateSelected =  Color.parseColor("#5ab72e");
+    int colorStateSelected = Color.parseColor("#5ab72e");
 
     public int backgroundColor;
 
 
-    Paint ovalPaint,textSelectedPaint,textNormalPaint;
+    Paint ovalPaint, textSelectedPaint, textNormalPaint;
     Bitmap thumbIcon;
     RectF ovalRectF;
-    Rect orginalBitmapRect,drawnBitmapRect;
+    Rect orginalBitmapRect, drawnBitmapRect;
     Rect textBounds;
 
     private float viewWidth;
@@ -79,41 +66,38 @@ public class ThreeStateSwitch extends View {
     private int paddingTop;
 
 
-    public int xCircle=0;
-    public int yCircle=0;
-    public int diameterSize =0;
+    public int xCircle = 0;
+    public int yCircle = 0;
+    public int diameterSize = 0;
 
 
-    String lessText="";
-    String moreText="";
+    String lessText = "";
+    String moreText = "";
 
 
     public ThreeStateSwitch(Context context) {
         super(context);
-        init(context,null);
+        init(context, null);
     }
 
     public ThreeStateSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context,attrs);
+        init(context, attrs);
     }
 
     public ThreeStateSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context,attrs);
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ThreeStateSwitch(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
+        init(context, attrs);
     }
 
 
-    public void init(Context context, AttributeSet attrs)
-    {
-        this.context = context;
-        this.attrs = attrs;
+    public void init(Context context, AttributeSet attrs) {
 
 //        int[] attrsArray = new int[] {
 //                R.attr.background_selected_color, // 0
@@ -127,66 +111,65 @@ public class ThreeStateSwitch extends View {
 //        };
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ThreeStateSwitch);
 
-        colorStateSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_selected_color ,getResources().getColor(R.color.background_selected_color));
-        colorStateUnSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_normal_color  ,getResources().getColor(R.color.background_normal_color));
+        colorStateSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_selected_color, getResources().getColor(R.color.background_selected_color));
+        colorStateUnSelected = ta.getColor(R.styleable.ThreeStateSwitch_background_normal_color, getResources().getColor(R.color.background_normal_color));
 
-        backgroundColor=colorStateUnSelected;
+        backgroundColor = colorStateUnSelected;
 
 
-        text_normal_color = ta.getColor(R.styleable.ThreeStateSwitch_text_normal_color ,getResources().getColor(R.color.text_normal_color));
-        text_selected_color = ta.getColor(R.styleable.ThreeStateSwitch_text_selected_color  ,getResources().getColor(R.color.text_selected_color));
+        text_normal_color = ta.getColor(R.styleable.ThreeStateSwitch_text_normal_color, getResources().getColor(R.color.text_normal_color));
+        text_selected_color = ta.getColor(R.styleable.ThreeStateSwitch_text_selected_color, getResources().getColor(R.color.text_selected_color));
 
-        text_normal_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_normal_size  ,(int)getResources().getDimension(R.dimen.text_normal_size));
-        text_selected_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_selected_size  ,(int)getResources().getDimension(R.dimen.text_selected_size));
+        text_normal_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_normal_size, (int) getResources().getDimension(R.dimen.text_normal_size));
+        text_selected_size = ta.getDimensionPixelSize(R.styleable.ThreeStateSwitch_text_selected_size, (int) getResources().getDimension(R.dimen.text_selected_size));
 
-        twoStateAfterInit = ta.getBoolean(R.styleable.ThreeStateSwitch_two_state_after_init , false);
+        twoStateAfterInit = ta.getBoolean(R.styleable.ThreeStateSwitch_two_state_after_init, false);
 
 
         lessText = ta.getString(R.styleable.ThreeStateSwitch_text_left);
-        if(lessText==null)
-        {
-            lessText=getResources().getString(R.string.text_left);
+        if (lessText == null) {
+            lessText = getResources().getString(R.string.text_left);
         }
         moreText = ta.getString(R.styleable.ThreeStateSwitch_text_right);
-        if(moreText==null)
-        {
-            moreText=getResources().getString(R.string.text_right);
+        if (moreText == null) {
+            moreText = getResources().getString(R.string.text_right);
         }
 
 
         ta.recycle();
 
 
-        ovalPaint =new Paint();
+        ovalPaint = new Paint();
         ovalPaint.setColor(backgroundColor);
         ovalPaint.setAntiAlias(true);
 
         thumbIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.switch_circle);
 
-        orginalBitmapRect=new Rect();
-        drawnBitmapRect=new Rect();
-        ovalRectF=new RectF();
-        textBounds= new Rect();
+        orginalBitmapRect = new Rect();
+        drawnBitmapRect = new Rect();
+        ovalRectF = new RectF();
+        textBounds = new Rect();
 
         textSelectedPaint = new Paint();
         textSelectedPaint.setColor(text_selected_color);
-        textSelectedPaint.setTextSize( text_selected_size);
+        textSelectedPaint.setTextSize(text_selected_size);
         textSelectedPaint.setAntiAlias(true);
 
 
         textNormalPaint = new Paint();
         textNormalPaint.setColor(text_normal_color);
-        textNormalPaint.setTextSize( text_normal_size);
+        textNormalPaint.setTextSize(text_normal_size);
         textNormalPaint.setAntiAlias(true);
     }
 
 
-    public interface OnStateChangeListener
-    {
+    public interface OnStateChangeListener {
         void OnStateChangeListener(int currentState);
     }
+
     public OnStateChangeListener onStateChangeListener;
+
     public void setOnChangeListener(OnStateChangeListener onStateChangeListener) {
         this.onStateChangeListener = onStateChangeListener;
     }
@@ -211,8 +194,7 @@ public class ThreeStateSwitch extends View {
     }
 
 
-    public int getState()
-    {
+    public int getState() {
         return this.state;
     }
 
@@ -221,128 +203,118 @@ public class ThreeStateSwitch extends View {
         int widthSize = MeasureSpec.getSize(widthSpec);
         int heightSize = MeasureSpec.getSize(heightSpec);
 
-        paddingRight=getPaddingRight();
-        paddingLeft=getPaddingLeft();
-        paddingBottom=getPaddingBottom();
-        paddingTop=getPaddingTop();
+        paddingRight = getPaddingRight();
+        paddingLeft = getPaddingLeft();
+        paddingBottom = getPaddingBottom();
+        paddingTop = getPaddingTop();
 
 
-        textLeftNormalWidth =textNormalPaint.measureText(lessText);
-        textRightNormalWidth =textNormalPaint.measureText(moreText);
+        textLeftNormalWidth = textNormalPaint.measureText(lessText);
+        textRightNormalWidth = textNormalPaint.measureText(moreText);
 
-        textLeftSelectedWidth =textSelectedPaint.measureText(lessText);
-        textRightSelectedWidth =textSelectedPaint.measureText(moreText);
+        textLeftSelectedWidth = textSelectedPaint.measureText(lessText);
+        textRightSelectedWidth = textSelectedPaint.measureText(moreText);
 
-        maxNeededTextWidth= Math.max(textLeftNormalWidth, textRightNormalWidth);
-        maxNeededTextWidth= Math.max(maxNeededTextWidth, textLeftSelectedWidth);
-        maxNeededTextWidth= Math.max(maxNeededTextWidth, textRightSelectedWidth);
-        maxNeededTextWidth+=dpToPx(5);
-
-
-        float minWidth=(2*maxNeededTextWidth)+dpToPx(130)+paddingLeft+paddingRight;
-        float minHeight=dpToPx(35)+paddingBottom+paddingTop;
+        maxNeededTextWidth = Math.max(textLeftNormalWidth, textRightNormalWidth);
+        maxNeededTextWidth = Math.max(maxNeededTextWidth, textLeftSelectedWidth);
+        maxNeededTextWidth = Math.max(maxNeededTextWidth, textRightSelectedWidth);
+        maxNeededTextWidth += dpToPx(5);
 
 
-        int pWidth=resolveSize((int) minWidth,widthSpec);
-        int pHeight=resolveSize((int) minHeight,heightSpec);
+        float minWidth = (2 * maxNeededTextWidth) + dpToPx(130) + paddingLeft + paddingRight;
+        float minHeight = dpToPx(35) + paddingBottom + paddingTop;
 
 
-        float LeftRect=maxNeededTextWidth+paddingLeft;
-        float topRect=paddingTop;
-        float rightRect=pWidth-maxNeededTextWidth-paddingRight;
-        float bottomRect=pHeight-paddingBottom;
-
-        ovalRectF.set(LeftRect,topRect,rightRect,bottomRect);
+        int pWidth = resolveSize((int) minWidth, widthSpec);
+        int pHeight = resolveSize((int) minHeight, heightSpec);
 
 
-        diameterSize = Math.min(pWidth-paddingRight-paddingLeft-(int)(2*maxNeededTextWidth)
-                ,pHeight-paddingTop-paddingBottom);
+        float LeftRect = maxNeededTextWidth + paddingLeft;
+        float topRect = paddingTop;
+        float rightRect = pWidth - maxNeededTextWidth - paddingRight;
+        float bottomRect = pHeight - paddingBottom;
 
-        switch (state)
-        {
+        ovalRectF.set(LeftRect, topRect, rightRect, bottomRect);
+
+
+        diameterSize = Math.min(pWidth - paddingRight - paddingLeft - (int) (2 * maxNeededTextWidth)
+                , pHeight - paddingTop - paddingBottom);
+
+        switch (state) {
             case -1:
                 if (!twoStateAfterInit)
-                    xCircle=(int)(ovalRectF.left+(diameterSize /2.0));
+                    xCircle = (int) (ovalRectF.left + (diameterSize / 2.0));
                 else
-                    xCircle=(int)(ovalRectF.centerX());
+                    xCircle = (int) (ovalRectF.centerX());
                 break;
             case 0:
-                xCircle=(int)(ovalRectF.centerX());
+                xCircle = (int) (ovalRectF.centerX());
                 break;
             case 1:
-                xCircle=(int)(ovalRectF.right- (diameterSize /2.0));
+                xCircle = (int) (ovalRectF.right - (diameterSize / 2.0));
                 break;
         }
-        yCircle= (int) ovalRectF.centerY();
-
+        yCircle = (int) ovalRectF.centerY();
 
 
 //        changeViewSize(widthSize,heightSize);
         viewWidth = pWidth;
         viewHeight = pHeight;
-        setMeasuredDimension(pWidth,pHeight);
+        setMeasuredDimension(pWidth, pHeight);
     }
 
 
-    float textLeftSelectedWidth,textRightSelectedWidth,textLeftNormalWidth, textRightNormalWidth,maxNeededTextWidth;
+    float textLeftSelectedWidth, textRightSelectedWidth, textLeftNormalWidth, textRightNormalWidth, maxNeededTextWidth;
 
 
-
-    int delta=0;
+    int delta = 0;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction() & MotionEvent.ACTION_MASK;
-        switch(action) {
-            case MotionEvent.ACTION_DOWN : {
+        switch (action) {
+            case MotionEvent.ACTION_DOWN: {
                 this.getParent().requestDisallowInterceptTouchEvent(true);
-                startX=event.getX();
-                if(state==whichStateClick(event.getX(),event.getY()))
-                {
-                    delta=-1*((int)event.getX()-xCircle);
-                    isPressed=true;
+                startX = event.getX();
+                if (state == whichStateClick(event.getX(), event.getY())) {
+                    delta = -1 * ((int) event.getX() - xCircle);
+                    isPressed = true;
                 }
             }
             case MotionEvent.ACTION_MOVE:
-                if(isDrag==false&& Math.abs(startX-event.getX())>15) {
+                if (!isDrag && Math.abs(startX - event.getX()) > 15) {
                     isDrag = true;
                 }
-                if(isDrag)
-                {
-                    int endBoundry=(int) Math.max((diameterSize /2)-delta,event.getX());
-                    int tempX=(int) Math.min(endBoundry,viewWidth- (diameterSize /2));
-                    xCircle=tempX+delta;
-                    xCircle=setBoundForXCircle(xCircle);
+                if (isDrag) {
+                    int endBoundry = (int) Math.max((diameterSize / 2) - delta, event.getX());
+                    int tempX = (int) Math.min(endBoundry, viewWidth - (diameterSize / 2));
+                    xCircle = tempX + delta;
+                    xCircle = setBoundForXCircle(xCircle);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                int tempState=whichStateClick(event.getX(),event.getY());
-                isDrag=false;
-                isPressed=false;
+                int tempState = whichStateClick(event.getX(), event.getY());
+                isDrag = false;
+                isPressed = false;
                 changeState(tempState);
                 break;
         }
-        xDrag=event.getX();
-        yDrag=event.getY();
+        float xDrag = event.getX();
+        float yDrag = event.getY();
         invalidate();
         return true;
     }
 
-    public void setNormalTextTypeface(Typeface typeface)
-    {
-        this.normalTextTypeface=typeface;
+    public void setNormalTextTypeface(Typeface typeface) {
         textNormalPaint.setTypeface(typeface);
     }
 
-    public void setSelectedTextTypeface(Typeface typeface)
-    {
-        this.selectedTextTypeface=typeface;
+    public void setSelectedTextTypeface(Typeface typeface) {
         textSelectedPaint.setTypeface(typeface);
     }
 
 
-    private int whichStateClick(float x ,float y)
-    {
+    private int whichStateClick(float x, float y) {
         if (twoStateAfterInit) {
             int half = (int) ((viewWidth - (2 * maxNeededTextWidth) - paddingLeft - paddingRight) / 2.0);
             if (x < half + maxNeededTextWidth + paddingLeft)
@@ -350,25 +322,24 @@ public class ThreeStateSwitch extends View {
             else
                 return 1;
         }
-        int yekSevom=(int)((viewWidth-(2*maxNeededTextWidth)-paddingLeft-paddingRight)/3.0);
-        if(x<yekSevom+maxNeededTextWidth+paddingLeft)
+        int yekSevom = (int) ((viewWidth - (2 * maxNeededTextWidth) - paddingLeft - paddingRight) / 3.0);
+        if (x < yekSevom + maxNeededTextWidth + paddingLeft)
             return -1;
-        else if(x>(2*yekSevom)+maxNeededTextWidth+paddingLeft)
+        else if (x > (2 * yekSevom) + maxNeededTextWidth + paddingLeft)
             return 1;
         return 0;
     }
 
 
-    private int setBoundForXCircle(float xCircle)
-    {
+    private int setBoundForXCircle(float xCircle) {
         //Log.d("before",String.valueOf(xCircle));
-        if(xCircle<ovalRectF.left+(diameterSize /2.0))
-            xCircle=(float)(ovalRectF.left+(diameterSize /2.0));
-        else if(xCircle>(float)(ovalRectF.right-(diameterSize /2.0)))
-            xCircle=(float)(ovalRectF.right-(diameterSize /2.0));
+        if (xCircle < ovalRectF.left + (diameterSize / 2.0))
+            xCircle = (float) (ovalRectF.left + (diameterSize / 2.0));
+        else if (xCircle > (float) (ovalRectF.right - (diameterSize / 2.0)))
+            xCircle = (float) (ovalRectF.right - (diameterSize / 2.0));
 
         //Log.d("after",String.valueOf(xCircle));
-        return (int)xCircle;
+        return (int) xCircle;
     }
 
     @Override
@@ -376,58 +347,52 @@ public class ThreeStateSwitch extends View {
 
         //ovalRectF.set(0,0,viewWidth,viewHeight);
         ovalPaint.setColor(backgroundColor);
-        canvas.drawRoundRect(ovalRectF, diameterSize /2, diameterSize /2, ovalPaint);
+        canvas.drawRoundRect(ovalRectF, diameterSize / 2, diameterSize / 2, ovalPaint);
 
 
-        if(!isAnimate&&!isDrag)
-        {
-            if(state==-1)
-            {
-                xCircle=(int)(diameterSize /2.0)+(int)ovalRectF.left;
+        if (!isAnimate && !isDrag) {
+            if (state == -1) {
+                xCircle = (int) (diameterSize / 2.0) + (int) ovalRectF.left;
+            } else if (state == 0) {
+                xCircle = (int) (ovalRectF.centerX());
+            } else if (state == 1) {
+                xCircle = (int) (ovalRectF.right - (diameterSize / 2.0));
             }
-            else if(state==0)
-            {
-                xCircle=(int)(ovalRectF.centerX());
-            }
-            else if(state==1)
-            {
-                xCircle=(int)(ovalRectF.right- (diameterSize /2.0));
-            }
-            yCircle=(int)(ovalRectF.centerY());
+            yCircle = (int) (ovalRectF.centerY());
         }
 
 
-        if(isPressed)
-            diameterSize +=dpToPx(4);
-
-
-        yCircle=(int)(ovalRectF.centerY());
-
-
-
-        xCircle=setBoundForXCircle(xCircle);
-        orginalBitmapRect.set(0,0,thumbIcon.getWidth(),thumbIcon.getHeight());
-        drawnBitmapRect.set(xCircle-(int)(diameterSize /2.0),yCircle-(int)(diameterSize /2.0)
-                ,xCircle+ (int)(diameterSize /2.0), yCircle+(int)(diameterSize /2.0));
-
-        canvas.drawBitmap(thumbIcon,orginalBitmapRect,drawnBitmapRect,null);
         if (isPressed)
-            diameterSize -=dpToPx(4);
+            diameterSize += dpToPx(4);
 
-        if(state==-1)
-            drawCenter(canvas,(int)(maxNeededTextWidth/2.0)+paddingLeft,(int)(ovalRectF.centerY()),textSelectedPaint,lessText);
-        else
-            drawCenter(canvas,(int)(maxNeededTextWidth/2.0)+paddingLeft,(int)(ovalRectF.centerY()),textNormalPaint,lessText);
 
-        if(state==1)
-            drawCenter(canvas,(int)(viewWidth-(maxNeededTextWidth/2.0)-paddingRight),(int)(ovalRectF.centerY()),textSelectedPaint,moreText);
+        yCircle = (int) (ovalRectF.centerY());
+
+
+        xCircle = setBoundForXCircle(xCircle);
+        orginalBitmapRect.set(0, 0, thumbIcon.getWidth(), thumbIcon.getHeight());
+        drawnBitmapRect.set(xCircle - (int) (diameterSize / 2.0), yCircle - (int) (diameterSize / 2.0)
+                , xCircle + (int) (diameterSize / 2.0), yCircle + (int) (diameterSize / 2.0));
+
+        canvas.drawBitmap(thumbIcon, orginalBitmapRect, drawnBitmapRect, null);
+        if (isPressed)
+            diameterSize -= dpToPx(4);
+
+        if (state == -1)
+            drawCenter(canvas, (int) (maxNeededTextWidth / 2.0) + paddingLeft, (int) (ovalRectF.centerY()), textSelectedPaint, lessText);
         else
-            drawCenter(canvas,(int)(viewWidth-(maxNeededTextWidth/2.0)-paddingRight),(int)(ovalRectF.centerY()),textNormalPaint,moreText);
+            drawCenter(canvas, (int) (maxNeededTextWidth / 2.0) + paddingLeft, (int) (ovalRectF.centerY()), textNormalPaint, lessText);
+
+        if (state == 1)
+            drawCenter(canvas, (int) (viewWidth - (maxNeededTextWidth / 2.0) - paddingRight), (int) (ovalRectF.centerY()), textSelectedPaint, moreText);
+        else
+            drawCenter(canvas, (int) (viewWidth - (maxNeededTextWidth / 2.0) - paddingRight), (int) (ovalRectF.centerY()), textNormalPaint, moreText);
 
     }
 
 
     private Rect r = new Rect();
+
     private void drawCenter(Canvas canvas, int drawX, int drawY, Paint paint, String text) {
         paint.setTextAlign(Paint.Align.LEFT);
         paint.getTextBounds(text, 0, text.length(), r);
@@ -437,14 +402,12 @@ public class ThreeStateSwitch extends View {
     }
 
 
-    public void changeState(int mState)
-    {
-        this.changeState(mState,true);
+    public void changeState(int mState) {
+        this.changeState(mState, true);
     }
-    public void changeState(int mState,boolean animate)
-    {
-        if(animate==false)
-        {
+
+    public void changeState(int mState, boolean animate) {
+        if (!animate) {
             switch (mState) {
                 case -1:
                     if (!twoStateAfterInit)
@@ -460,14 +423,14 @@ public class ThreeStateSwitch extends View {
                     setBackColor(colorStateSelected);
                     break;
             }
-            this.state=mState;
+            this.state = mState;
             return;
         }
-        if(onStateChangeListener!=null)
+        if (onStateChangeListener != null)
             onStateChangeListener.OnStateChangeListener(mState);
         AnimatorSet animSet = new AnimatorSet();
         ArrayList<Animator> viewAnimList = new ArrayList<Animator>();
-        ObjectAnimator anim,anim1;
+        ObjectAnimator anim, anim1;
         switch (mState) {
             case -1:
                 if (twoStateAfterInit) {
@@ -479,7 +442,7 @@ public class ThreeStateSwitch extends View {
                 }
                 anim.setEvaluator(new ArgbEvaluator());
                 viewAnimList.add(anim);
-                anim1 = ObjectAnimator.ofInt(this, "xCircle",setBoundForXCircle((float)(diameterSize /2.0)))
+                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (diameterSize / 2.0)))
                         .setDuration(400);
                 viewAnimList.add(anim1);
                 break;
@@ -489,7 +452,7 @@ public class ThreeStateSwitch extends View {
                 anim.setEvaluator(new ArgbEvaluator());
                 viewAnimList.add(anim);
 
-                anim1 = ObjectAnimator.ofInt(this, "xCircle",setBoundForXCircle((float)(ovalRectF.centerX())))
+                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (ovalRectF.centerX())))
                         .setDuration(400);
                 viewAnimList.add(anim1);
                 break;
@@ -499,7 +462,7 @@ public class ThreeStateSwitch extends View {
                 anim.setEvaluator(new ArgbEvaluator());
                 viewAnimList.add(anim);
 
-                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float)(viewWidth- (diameterSize /2.0))))
+                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (viewWidth - (diameterSize / 2.0))))
                         .setDuration(400);
                 viewAnimList.add(anim1);
                 break;
@@ -508,42 +471,39 @@ public class ThreeStateSwitch extends View {
         animSet.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
-                isAnimate=true;
+                isAnimate = true;
 
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                isAnimate=false;
+                isAnimate = false;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                isAnimate=false;
+                isAnimate = false;
 
             }
 
             @Override
             public void onAnimationRepeat(Animator animation) {
-                isAnimate=false;
+                isAnimate = false;
 
             }
         });
 
         animSet.start();
-        this.state=mState;
+        this.state = mState;
     }
 
-    public static int dpToPx(int dp)
-    {
+    public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
 
-    public static int pxToDp(int px)
-    {
+    public static int pxToDp(int px) {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
-
 
 
     @Override
@@ -556,7 +516,7 @@ public class ThreeStateSwitch extends View {
     protected void onRestoreInstanceState(Parcelable state) {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        changeState(savedState.state,false);
+        changeState(savedState.state, false);
     }
 
 
@@ -588,7 +548,6 @@ public class ThreeStateSwitch extends View {
             super(in);
             state = in.readInt();
         }
-
 
 
         @Override
