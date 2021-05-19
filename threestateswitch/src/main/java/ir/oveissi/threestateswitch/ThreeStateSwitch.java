@@ -166,7 +166,7 @@ public class ThreeStateSwitch extends View {
 
 
     public interface OnStateChangeListener {
-        void OnStateChangeListener(int currentState);
+        void OnStateChangeListener(int newState);
     }
 
     public OnStateChangeListener onStateChangeListener;
@@ -408,7 +408,75 @@ public class ThreeStateSwitch extends View {
     }
 
     public void changeState(int mState, boolean animate) {
-        if (!animate) {
+        state = mState;
+
+        if (onStateChangeListener != null)
+            onStateChangeListener.OnStateChangeListener(mState);
+
+        if (animate) {
+            AnimatorSet animSet = new AnimatorSet();
+            ArrayList<Animator> viewAnimList = new ArrayList<>();
+            ObjectAnimator anim, anim1;
+            switch (mState) {
+                case -1:
+                    if (twoStateAfterInit) {
+                        anim = ObjectAnimator.ofInt(this, "BackColor", colorStateUnSelected)
+                                .setDuration(400);
+                    } else {
+                        anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
+                                .setDuration(400);
+                    }
+                    anim.setEvaluator(new ArgbEvaluator());
+                    viewAnimList.add(anim);
+                    anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (diameterSize / 2.0)))
+                            .setDuration(400);
+                    viewAnimList.add(anim1);
+                    break;
+                case 0:
+                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateUnSelected)
+                            .setDuration(400);
+                    anim.setEvaluator(new ArgbEvaluator());
+                    viewAnimList.add(anim);
+
+                    anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle(ovalRectF.centerX()))
+                            .setDuration(400);
+                    viewAnimList.add(anim1);
+                    break;
+                case 1:
+                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
+                            .setDuration(400);
+                    anim.setEvaluator(new ArgbEvaluator());
+                    viewAnimList.add(anim);
+
+                    anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (viewWidth - (diameterSize / 2.0))))
+                            .setDuration(400);
+                    viewAnimList.add(anim1);
+                    break;
+            }
+            animSet.playTogether(viewAnimList);
+            animSet.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    isAnimate = true;
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    isAnimate = false;
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    isAnimate = false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+                    isAnimate = false;
+                }
+            });
+            animSet.start();
+        } else { // No animation
             switch (mState) {
                 case -1:
                     if (!twoStateAfterInit)
@@ -424,78 +492,7 @@ public class ThreeStateSwitch extends View {
                     setBackColor(colorStateSelected);
                     break;
             }
-            this.state = mState;
-            return;
         }
-        if (onStateChangeListener != null)
-            onStateChangeListener.OnStateChangeListener(mState);
-        AnimatorSet animSet = new AnimatorSet();
-        ArrayList<Animator> viewAnimList = new ArrayList<>();
-        ObjectAnimator anim, anim1;
-        switch (mState) {
-            case -1:
-                if (twoStateAfterInit) {
-                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateUnSelected)
-                            .setDuration(400);
-                } else {
-                    anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
-                            .setDuration(400);
-                }
-                anim.setEvaluator(new ArgbEvaluator());
-                viewAnimList.add(anim);
-                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (diameterSize / 2.0)))
-                        .setDuration(400);
-                viewAnimList.add(anim1);
-                break;
-            case 0:
-                anim = ObjectAnimator.ofInt(this, "BackColor", colorStateUnSelected)
-                        .setDuration(400);
-                anim.setEvaluator(new ArgbEvaluator());
-                viewAnimList.add(anim);
-
-                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle(ovalRectF.centerX()))
-                        .setDuration(400);
-                viewAnimList.add(anim1);
-                break;
-            case 1:
-                anim = ObjectAnimator.ofInt(this, "BackColor", colorStateSelected)
-                        .setDuration(400);
-                anim.setEvaluator(new ArgbEvaluator());
-                viewAnimList.add(anim);
-
-                anim1 = ObjectAnimator.ofInt(this, "xCircle", setBoundForXCircle((float) (viewWidth - (diameterSize / 2.0))))
-                        .setDuration(400);
-                viewAnimList.add(anim1);
-                break;
-        }
-        animSet.playTogether(viewAnimList);
-        animSet.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                isAnimate = true;
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                isAnimate = false;
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-                isAnimate = false;
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-                isAnimate = false;
-
-            }
-        });
-
-        animSet.start();
-        this.state = mState;
     }
 
     public static int dpToPx(int dp) {
